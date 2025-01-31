@@ -1,6 +1,6 @@
 import { AnswerQuestion } from './answer-question';
+import { Answer } from '../../enterprise/entities/answer';
 import { AnswerRepository } from '../repositories/answers-repository';
-import { Answer } from '../entities/answer';
 
 const mockAnswerRepository: AnswerRepository = {
   create: async function (answer: Answer) {

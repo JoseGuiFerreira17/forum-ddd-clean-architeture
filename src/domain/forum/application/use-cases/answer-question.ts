@@ -1,5 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
-import { AnswerRepository } from '../repositories/answers-repository';
+import { AnswersRepository } from '../repositories/answers-repository';
 import { Answer } from '../../enterprise/entities/answer';
 
 interface AnswerQuestionUseCaseRequest {
@@ -8,14 +8,18 @@ interface AnswerQuestionUseCaseRequest {
   content: string;
 }
 
-export class AnswerQuestion {
-  constructor(private answersRepository: AnswerRepository) {}
+interface AnswerQuestionUseCaseResponse {
+  answer: Answer;
+}
+
+export class AnswerQuestionUseCase {
+  constructor(private answersRepository: AnswersRepository) {}
 
   async execute({
     instructorId,
     questionId,
     content,
-  }: AnswerQuestionUseCaseRequest) {
+  }: AnswerQuestionUseCaseRequest): Promise<AnswerQuestionUseCaseResponse> {
     const answer = Answer.create({
       content,
       authorId: new UniqueEntityId(instructorId),
@@ -24,6 +28,6 @@ export class AnswerQuestion {
 
     await this.answersRepository.create(answer);
 
-    return answer;
+    return { answer };
   }
 }

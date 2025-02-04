@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/paginations-params';
 import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository';
 import { QuestionComment } from '@/domain/forum/enterprise/entities/question-comment';
 
@@ -8,6 +9,14 @@ export class InMemoryQuestionCommentsRepository
 
   async findById(id: string) {
     return this.items.find((item) => item.id.toString() === id) || null;
+  }
+
+  async findManyByQuestionId(questionId: string, { page }: PaginationParams) {
+    const questionComments = this.items
+      .filter((answer) => answer.questionId.toString() === questionId)
+      .slice((page - 1) * 20, page * 20);
+
+    return questionComments;
   }
 
   async delete(questionComment: QuestionComment) {

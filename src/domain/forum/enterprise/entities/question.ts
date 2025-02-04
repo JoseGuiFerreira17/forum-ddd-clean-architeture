@@ -3,10 +3,12 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { Optional } from '@/core/entities/types/optional';
 import dayjs from 'dayjs';
 import { AggregateRoot } from '@/core/entities/aggregate-root';
+import { QuestionAttachment } from './question-attachment';
 
 export interface QuestionProps {
   authorId: UniqueEntityId;
   bestAnswerId?: UniqueEntityId;
+  attachments: QuestionAttachment[];
   title: string;
   content: string;
   slug: Slug;
@@ -21,6 +23,10 @@ export class Question extends AggregateRoot<QuestionProps> {
 
   get bestAnswerId() {
     return this.props.bestAnswerId;
+  }
+
+  get attachments() {
+    return this.props.attachments;
   }
 
   get title() {
@@ -61,6 +67,10 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.touch();
   }
 
+  set attachments(attachments: QuestionAttachment[]) {
+    this.props.attachments = attachments;
+  }
+
   set title(title: string) {
     this.props.title = title;
     this.props.slug = Slug.createFromtext(title);
@@ -68,13 +78,14 @@ export class Question extends AggregateRoot<QuestionProps> {
   }
 
   static create(
-    props: Optional<QuestionProps, 'createdAt' | 'slug'>,
+    props: Optional<QuestionProps, 'createdAt' | 'slug' | 'attachments'>,
     id?: UniqueEntityId,
   ) {
     const question = new Question(
       {
         ...props,
         slug: props.slug ?? Slug.createFromtext(props.title),
+        attachments: props.attachments ?? [],
         createdAt: props.createdAt ?? new Date(),
       },
       id,

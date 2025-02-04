@@ -1,5 +1,8 @@
+import { Either, left, right } from '@/core/either';
 import { Question } from '../../enterprise/entities/question';
 import { QuestionsRepository } from '../repositories/questions-repository';
+import { ResourceNotFoundError } from './errors/resource-not-found';
+import { NotAllowedError } from './errors/not-allowed';
 
 interface EditQuestionUseCaseRequest {
   authorId: string;
@@ -8,9 +11,10 @@ interface EditQuestionUseCaseRequest {
   content: string;
 }
 
-interface EditQuestionUseCaseResponse {
-  question: Question;
-}
+type EditQuestionUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+  { question: Question }
+>;
 
 export class EditQuestionUseCase {
   constructor(private questionsRespository: QuestionsRepository) {}
@@ -24,11 +28,11 @@ export class EditQuestionUseCase {
     const question = await this.questionsRespository.findById(questionId);
 
     if (!question) {
-      throw new Error('Question not found');
+      return left(new ResourceNotFoundError());
     }
 
     if (question.authorId.toString() !== authorId) {
-      throw new Error('You can only delete your own questions');
+      return left(new NotAllowedError());
     }
 
     question.title = title;
@@ -36,6 +40,6 @@ export class EditQuestionUseCase {
 
     await this.questionsRespository.update(question);
 
-    return { question };
+    return right({ question });
   }
 }

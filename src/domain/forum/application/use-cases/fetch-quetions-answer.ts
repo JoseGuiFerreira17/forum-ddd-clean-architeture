@@ -1,14 +1,17 @@
+import { Either, left, right } from '@/core/either';
 import { Answer } from '../../enterprise/entities/answer';
 import { AnswersRepository } from '../repositories/answers-repository';
+import { ResourceNotFoundError } from './errors/resource-not-found';
 
 interface FetchQuetionsAnswerUseCaseRequest {
   questionId: string;
   page: number;
 }
 
-interface FetchQuetionsAnswerUseCaseResponse {
-  answers: Answer[];
-}
+type FetchQuetionsAnswerUseCaseResponse = Either<
+  ResourceNotFoundError,
+  { answers: Answer[] }
+>;
 
 export class FetchQuetionsAnswerUseCase {
   constructor(private answerRespository: AnswersRepository) {}
@@ -23,9 +26,9 @@ export class FetchQuetionsAnswerUseCase {
     );
 
     if (!answers) {
-      throw new Error('Answer not found');
+      return left(new ResourceNotFoundError());
     }
 
-    return { answers };
+    return right({ answers });
   }
 }

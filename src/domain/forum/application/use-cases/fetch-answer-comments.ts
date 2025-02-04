@@ -1,14 +1,17 @@
+import { Either, left, right } from '@/core/either';
 import { AnswerComment } from '../../enterprise/entities/answer-comment';
 import { AnswerCommentsRepository } from '../repositories/answer-comments-repository';
+import { ResourceNotFoundError } from './errors/resource-not-found';
 
 interface FetchQuetionCommentsUseCaseRequest {
   answerId: string;
   page: number;
 }
 
-interface FetchQuetionCommentsUseCaseResponse {
-  answerComments: AnswerComment[];
-}
+type FetchQuetionCommentsUseCaseResponse = Either<
+  ResourceNotFoundError,
+  { answerComments: AnswerComment[] }
+>;
 
 export class FetchQuetionCommentsUseCase {
   constructor(private answerCommentsRespository: AnswerCommentsRepository) {}
@@ -23,9 +26,9 @@ export class FetchQuetionCommentsUseCase {
       });
 
     if (!answerComments) {
-      throw new Error('Answer not found');
+      return left(new ResourceNotFoundError());
     }
 
-    return { answerComments };
+    return right({ answerComments });
   }
 }

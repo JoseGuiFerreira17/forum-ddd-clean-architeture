@@ -11,7 +11,7 @@ describe('fetch recent quetions use case', () => {
     sut = new FetchRecentQuestionsUseCase(inMemoryRepository);
   });
 
-  it('should be able cto fetch recent questions', async () => {
+  it('should be able to fetch recent questions', async () => {
     await inMemoryRepository.create(
       makeQuestion({ createdAt: new Date(2025, 1, 3) }),
     );
@@ -31,7 +31,7 @@ describe('fetch recent quetions use case', () => {
     ]);
   });
 
-  it('should be able cto fetch paginated recent questions', async () => {
+  it('should be able to fetch paginated recent questions', async () => {
     for (let i = 1; i <= 22; i++) {
       await inMemoryRepository.create(makeQuestion());
     }

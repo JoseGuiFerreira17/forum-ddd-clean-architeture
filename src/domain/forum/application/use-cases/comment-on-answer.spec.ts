@@ -22,13 +22,13 @@ describe('create comment on answer use case', () => {
 
     await inMemoryAnswersRepository.create(answer);
 
-    const { answerComment } = await sut.execute({
+    const result = await sut.execute({
       authorId: answer.authorId.toString(),
       answerId: answer.id.toString(),
       content: 'comment content',
     });
 
-    expect(answerComment).toMatchObject({
+    expect(result.value?.answerComment).toMatchObject({
       content: 'comment content',
     });
   });

@@ -11,15 +11,13 @@ describe('answer question use case', () => {
   });
 
   it('should be able create a answer', async () => {
-    const { answer } = await sut.execute({
+    const result = await sut.execute({
       instructorId: '1',
       questionId: '1',
       content: 'answer content',
     });
 
-    expect(answer).toMatchObject({
-      content: 'answer content',
-    });
-    expect(inMemoryRepository.items[0].id).toEqual(answer.id);
+    expect(inMemoryRepository.items[0]).toEqual(result.value?.answer);
+    expect(result.isRight()).toBe(true);
   });
 });

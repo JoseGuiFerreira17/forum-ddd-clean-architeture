@@ -19,10 +19,10 @@ describe('get question by slug use case', () => {
 
     inMemoryRepository.create(newQuestion);
 
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       slug: 'question-title',
     });
 
-    expect(question.title).toEqual(newQuestion.title);
+    expect(result.value?.question.title).toEqual(newQuestion.title);
   });
 });

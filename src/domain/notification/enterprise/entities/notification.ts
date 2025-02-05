@@ -3,7 +3,7 @@ import { Optional } from '@/core/entities/types/optional';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 
 export interface NotificationProps {
-  recipirentId: UniqueEntityId;
+  recipientId: UniqueEntityId;
   title: string;
   content: string;
   createdAt: Date;
@@ -11,8 +11,8 @@ export interface NotificationProps {
 }
 
 export class Notification extends Entity<NotificationProps> {
-  get recipirentId() {
-    return this.props.recipirentId;
+  get recipientId() {
+    return this.props.recipientId;
   }
 
   get title() {

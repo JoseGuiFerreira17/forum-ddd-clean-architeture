@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either';
 import { Answer } from '../../enterprise/entities/answer';
 import { AnswersRepository } from '../repositories/answers-repository';
-import { ResourceNotFoundError } from './errors/resource-not-found';
-import { NotAllowedError } from './errors/not-allowed';
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found';
+import { NotAllowedError } from '@/core/errors/not-allowed';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list';
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment';

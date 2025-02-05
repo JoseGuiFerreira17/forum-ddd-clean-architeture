@@ -13,7 +13,7 @@ export class InMemoryQuestionCommentsRepository
 
   async findManyByQuestionId(questionId: string, { page }: PaginationParams) {
     const questionComments = this.items
-      .filter((answer) => answer.questionId.toString() === questionId)
+      .filter((question) => question.questionId.toString() === questionId)
       .slice((page - 1) * 20, page * 20);
 
     return questionComments;
